@@ -6,11 +6,20 @@ before_install:
     - docker build -t dvillaj/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-    # To Make sure that the tests exits we use the --coverage param
-    - docker run dvillaj/react-test npm test -- --coverage
+    # To Make sure that the tests exits ...
+    - docker run -e CI=true dvillaj/react-test npm test
 
 after_success:
     - docker build -t dvillaj/multi-client ./client
     - docker build -t dvillaj/multi-nginx ./nginx
     - docker build -t dvillaj/multi-server ./server
     - docker build -t dvillaj/multi-worker ./worker
+
+    # Login in to the docker CLI
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+    # Take thous images and push them to the docker hub
+    - docker push dvillaj/multi-client
+    - docker push dvillaj/multi-nginx
+    - docker push dvillaj/multi-server
+    - docker push dvillaj/multi-worker
