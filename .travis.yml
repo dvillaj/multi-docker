@@ -23,3 +23,30 @@ after_success:
     - docker push dvillaj/multi-nginx
     - docker push dvillaj/multi-server
     - docker push dvillaj/multi-worker
+
+deploy:
+  # If you are getting a persistent missing bucket_name error ...
+  # edge=true
+  provider: elasticbeanstalk
+  # from amazon url
+  region: "us-east-2"
+  # the name of the amazon app
+  app: "multi-docker"
+  # the name of amazon enviroment
+  env: "MultiDocker-env"
+  
+  # From s3 service in amazon console. elasticbeanstalk creates a s3 bucket automatically
+  # it is reuse for other elasticbeanstalk project
+  bucket_name: "elasticbeanstalk-us-east-2-758703245203"
+  # By default the path is exaclty the name of the app
+  bucket_path: "multi-docker"
+  on:
+    branch: master
+    
+  # From IAM service in amazon console
+  # Add a new user with Programmatic access only
+  # Attach existing policies and check elasticbeanstalk full access
+  
+  # Add new enviroment variables in Travis repository (More Options -> settings)
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
