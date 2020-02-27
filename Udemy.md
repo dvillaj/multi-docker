@@ -39,3 +39,10 @@ git init
 git add .
 git commit -m "initial commit"
 ``` 
+
+
+## Amazon
+
+New Application
+Web server environment
+Preconfigured platform: Multi-Container Docker
